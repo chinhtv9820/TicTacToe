@@ -91,3 +91,12 @@ class TicTacToeClient:
         for btn in self.buttons:
             btn.config(text="", bg="SystemButtonFace")
         self.rematch_btn.config(text="Chơi lại ván mới", state=tk.DISABLED)
+
+    def receive_message(self):
+        while True:
+            try:
+                message = self.client.recv(1024).decode('utf-8')
+                if not message: break
+                
+                parts = message.split(" ", 2) # Tách tối đa 3 phần
+                cmd = parts[0]
