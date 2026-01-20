@@ -19,7 +19,8 @@ class TicTacToeClient:
         
         self.build_login_ui()
         self.window.mainloop()
-def build_login_ui(self):
+        
+    def build_login_ui(self):
         """Giao diện đăng nhập"""
         self.login_frame = tk.Frame(self.window)
         self.login_frame.pack(padx=20, pady=20)
@@ -29,6 +30,7 @@ def build_login_ui(self):
         self.name_entry.pack(pady=5)
         
         tk.Button(self.login_frame, text="Tìm trận đấu", command=self.connect_to_server).pack(pady=10)
+    
     def connect_to_server(self):
         name = self.name_entry.get()
         if not name:
@@ -51,7 +53,8 @@ def build_login_ui(self):
             
         except Exception as e:
             messagebox.showerror("Lỗi kết nối", f"Không thể kết nối Server: {e}")
-  def build_game_ui(self):
+            
+    def build_game_ui(self):
         """Giao diện bàn cờ"""
         self.game_frame = tk.Frame(self.window)
         self.game_frame.pack()
@@ -76,3 +79,15 @@ def build_login_ui(self):
                                      command=self.send_rematch, bg="lightblue")
         self.rematch_btn.pack(pady=10)
 
+    def send_move(self, index):
+        if self.is_my_turn and self.buttons[index]['text'] == "":
+            self.client.send(f"MOVE {index}".encode('utf-8'))
+
+    def send_rematch(self):
+        self.client.send("REMATCH".encode('utf-8'))
+        self.rematch_btn.config(text="Đã gửi yêu cầu...", state=tk.DISABLED)
+
+    def reset_board(self):
+        for btn in self.buttons:
+            btn.config(text="", bg="SystemButtonFace")
+        self.rematch_btn.config(text="Chơi lại ván mới", state=tk.DISABLED)
