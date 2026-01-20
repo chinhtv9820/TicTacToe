@@ -20,3 +20,11 @@ class GameSession:
         self.turn = "X"
         self.rematch_state = {p1_socket: False, p2_socket: False}
         self.lock = threading.Lock()
+
+    def broadcast(self, message):
+        """Gửi tin nhắn cho cả 2 client"""
+        try:
+            self.p1.send(message.encode('utf-8'))
+            self.p2.send(message.encode('utf-8'))
+        except:
+            pass
