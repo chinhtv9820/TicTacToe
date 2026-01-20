@@ -51,4 +51,28 @@ def build_login_ui(self):
             
         except Exception as e:
             messagebox.showerror("Lỗi kết nối", f"Không thể kết nối Server: {e}")
+  def build_game_ui(self):
+        """Giao diện bàn cờ"""
+        self.game_frame = tk.Frame(self.window)
+        self.game_frame.pack()
+
+        # Header hiển thị thông tin
+        self.info_label = tk.Label(self.game_frame, text="Đang tìm đối thủ...", font=("Arial", 12, "bold"))
+        self.info_label.pack(pady=10)
+
+        # Bàn cờ
+        self.board_frame = tk.Frame(self.game_frame)
+        self.board_frame.pack()
+        
+        self.buttons = []
+        for i in range(9):
+            btn = tk.Button(self.board_frame, text="", font=("Arial", 24), width=5, height=2,
+                            command=lambda idx=i: self.send_move(idx))
+            btn.grid(row=i//3, column=i%3)
+            self.buttons.append(btn)
+        
+        # Nút chơi lại (ẩn đi ban đầu)
+        self.rematch_btn = tk.Button(self.game_frame, text="Chơi lại ván mới", state=tk.DISABLED, 
+                                     command=self.send_rematch, bg="lightblue")
+        self.rematch_btn.pack(pady=10)
 
