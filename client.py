@@ -19,3 +19,13 @@ class TicTacToeClient:
         
         self.build_login_ui()
         self.window.mainloop()
+def build_login_ui(self):
+        """Giao diện đăng nhập"""
+        self.login_frame = tk.Frame(self.window)
+        self.login_frame.pack(padx=20, pady=20)
+
+        tk.Label(self.login_frame, text="Nhập tên của bạn:", font=("Arial", 12)).pack()
+        self.name_entry = tk.Entry(self.login_frame, font=("Arial", 12))
+        self.name_entry.pack(pady=5)
+        
+        tk.Button(self.login_frame, text="Tìm trận đấu", command=self.connect_to_server).pack(pady=10)
