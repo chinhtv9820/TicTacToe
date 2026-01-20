@@ -28,3 +28,16 @@ class GameSession:
             self.p2.send(message.encode('utf-8'))
         except:
             pass
+            
+    def send_to(self, socket, message):
+        try:
+            socket.send(message.encode('utf-8'))
+        except:
+            pass
+
+    def reset_game(self):
+        self.board = [""] * 9
+        self.turn = "X"
+        self.rematch_state = {self.p1: False, self.p2: False}
+        self.broadcast("RESET")
+        self.send_to(self.p1, "YOURTURN") # X đi trước
