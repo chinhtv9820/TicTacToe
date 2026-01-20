@@ -41,3 +41,12 @@ class GameSession:
         self.rematch_state = {self.p1: False, self.p2: False}
         self.broadcast("RESET")
         self.send_to(self.p1, "YOURTURN") # X đi trước
+
+    def check_winner(self):
+        wins = [(0,1,2), (3,4,5), (6,7,8), (0,3,6), (1,4,7), (2,5,8), (0,4,8), (2,4,6)]
+        for a, b, c in wins:
+            if self.board[a] == self.board[b] == self.board[c] and self.board[a] != "":
+                return self.board[a] # Trả về X hoặc O
+        if "" not in self.board:
+            return "DRAW"
+        return None
