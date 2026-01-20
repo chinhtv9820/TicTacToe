@@ -29,3 +29,26 @@ def build_login_ui(self):
         self.name_entry.pack(pady=5)
         
         tk.Button(self.login_frame, text="Tìm trận đấu", command=self.connect_to_server).pack(pady=10)
+    def connect_to_server(self):
+        name = self.name_entry.get()
+        if not name:
+            messagebox.showwarning("Lỗi", "Vui lòng nhập tên!")
+            return
+
+        self.my_name = name
+        try:
+            self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client.connect((HOST, PORT))
+            # Gửi gói tin LOGIN
+            self.client.send(f"LOGIN {self.my_name}".encode('utf-8'))
+            
+            # Chuyển sang màn hình chờ/game
+            self.login_frame.pack_forget()
+            self.build_game_ui()
+            
+            # Bắt đầu lắng nghe
+            threading.Thread(target=self.receive_message, daemon=True).start()
+            
+        except Exception as e:
+            messagebox.showerror("Lỗi kết nối", f"Không thể kết nối Server: {e}")
+
