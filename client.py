@@ -105,3 +105,7 @@ if cmd == "START":
                     self.my_symbol = parts[1]
                     self.opponent_name = parts[2]
                     self.info_label.config(text=f"Bạn ({self.my_symbol}) vs {self.opponent_name}")
+    elif cmd == "YOURTURN":
+                    self.is_my_turn = True
+                    self.info_label.config(text=f"Đến lượt BẠN ({self.my_symbol})", fg="green")
+
