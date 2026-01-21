@@ -100,3 +100,8 @@ class TicTacToeClient:
                 
                 parts = message.split(" ", 2) # Tách tối đa 3 phần
                 cmd = parts[0]
+if cmd == "START":
+                    # parts[1] = symbol, parts[2] = opponent_name
+                    self.my_symbol = parts[1]
+                    self.opponent_name = parts[2]
+                    self.info_label.config(text=f"Bạn ({self.my_symbol}) vs {self.opponent_name}")
