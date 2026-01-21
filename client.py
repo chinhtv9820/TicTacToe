@@ -108,4 +108,8 @@ if cmd == "START":
     elif cmd == "YOURTURN":
                     self.is_my_turn = True
                     self.info_label.config(text=f"Đến lượt BẠN ({self.my_symbol})", fg="green")
-
+  elif cmd == "MOVE":
+                    # parts[1] = index, parts[2] = symbol
+                    idx = int(parts[1])
+                    symbol = parts[2]
+                    self.buttons[idx].config(text=symbol)
