@@ -79,3 +79,15 @@ class GameSession:
                 self.turn = "O" if self.turn == "X" else "X"
                 next_player = self.p1 if self.turn == "X" else self.p2
                 self.send_to(next_player, "YOURTURN")
+
+    def handle_rematch(self, sender_socket):
+        self.rematch_state[sender_socket] = True
+        # Nếu cả 2 đều đồng ý chơi lại
+        if all(self.rematch_state.values()):
+            self.reset_game()
+
+def client_handler(client, name):
+    # Hàm này chỉ dùng để giữ kết nối ban đầu cho đến khi ghép cặp
+    pass
+
+clients_queue = [] # Hàng đợi chứa (socket, name)
