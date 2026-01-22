@@ -110,3 +110,21 @@ def wait_for_clients():
                     start_game_session(p1, p2)
         except:
             continue
+
+def start_game_session(p1_tuple, p2_tuple):
+    sock1, name1 = p1_tuple
+    sock2, name2 = p2_tuple
+    
+    session = GameSession(sock1, sock2, name1, name2)
+
+    # Gửi tin nhắn bắt đầu
+    # Format: START <Role> <OpponentName>
+    session.send_to(sock1, f"START X {name2}")
+    session.send_to(sock2, f"START O {name1}")
+    session.send_to(sock1, "YOURTURN")
+
+    # Tạo luồng lắng nghe riêng cho từng client trong session này
+    t1 = threading.Thread(target=listen_to_player, args=(session, sock1, sock2))
+    t2 = threading.Thread(target=listen_to_player, args=(session, sock2, sock1))
+    t1.start()
+    t2.start()
