@@ -50,3 +50,32 @@ class GameSession:
         if "" not in self.board:
             return "DRAW"
         return None
+
+    def handle_move(self, sender_socket, index):
+        with self.lock:
+            # Xác định ai là người gửi
+            symbol = "X" if sender_socket == self.p1 else "O"
+            
+            # Security: Kiểm tra đúng lượt và ô trống
+            if symbol != self.turn or self.board[index] != "":
+                return 
+
+            # Cập nhật bàn cờ
+            self.board[index] = symbol
+            
+            # Gửi cập nhật cho cả 2 bên
+            self.broadcast(f"MOVE {index} {symbol}")
+
+            # Kiểm tra thắng thua
+            winner = self.check_winner()
+            if winner:
+                if winner == "DRAW":
+                    self.broadcast("GAME_OVER DRAW Nobody")
+                else:
+                    win_name = self.p1_name if winner == "X" else self.p2_name
+                    self.broadcast(f"GAME_OVER WIN {win_name}")
+            else:
+                # Đổi lượt
+                self.turn = "O" if self.turn == "X" else "X"
+                next_player = self.p1 if self.turn == "X" else self.p2
+                self.send_to(next_player, "YOURTURN")
