@@ -147,3 +147,6 @@ def listen_to_player(session, current_sock, opponent_sock):
     # Xử lý ngắt kết nối (QUIT)
     session.send_to(opponent_sock, "QUIT")
     current_sock.close()
+
+if __name__ == "__main__":
+    wait_for_clients()
