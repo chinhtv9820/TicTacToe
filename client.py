@@ -113,3 +113,25 @@ if cmd == "START":
                     idx = int(parts[1])
                     symbol = parts[2]
                     self.buttons[idx].config(text=symbol)
+       if symbol == self.my_symbol:
+                        self.is_my_turn = False
+                        self.info_label.config(text=f"Đến lượt {self.opponent_name}...", fg="black")
+
+                elif cmd == "GAME_OVER":
+                    # parts[1] = reason (WIN/DRAW), parts[2] = winner_name
+                    result = parts[1]
+                    winner = parts[2]
+                    
+                    if result == "DRAW":
+                        msg = "Ván đấu HÒA!"
+                        color = "orange"
+                    elif winner == self.my_name:
+                        msg = "CHÚC MỪNG! BẠN ĐÃ THẮNG!"
+                        color = "blue"
+                    else:
+                        msg = f"RẤT TIẾC! {winner} ĐÃ THẮNG!"
+                        color = "red"
+                    
+                    self.info_label.config(text=msg, fg=color)
+                    self.is_my_turn = False
+                    self.rematch_btn.config(state=tk.NORMAL)
