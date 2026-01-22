@@ -91,3 +91,22 @@ def client_handler(client, name):
     pass
 
 clients_queue = [] # Hàng đợi chứa (socket, name)
+
+def wait_for_clients():
+    while True:
+        client, addr = server.accept()
+        try:
+            # Bước 1: Yêu cầu đăng nhập ngay khi kết nối
+            name = client.recv(1024).decode('utf-8')
+            if name.startswith("LOGIN"):
+                player_name = name.split(" ", 1)[1]
+                print(f"{player_name} đã kết nối từ {addr}")
+                clients_queue.append((client, player_name))
+
+                # Nếu đủ 2 người thì bắt đầu Game Session
+                if len(clients_queue) >= 2:
+                    p1 = clients_queue.pop(0)
+                    p2 = clients_queue.pop(0)
+                    start_game_session(p1, p2)
+        except:
+            continue
