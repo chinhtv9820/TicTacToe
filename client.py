@@ -135,3 +135,18 @@ if cmd == "START":
                     self.info_label.config(text=msg, fg=color)
                     self.is_my_turn = False
                     self.rematch_btn.config(state=tk.NORMAL)
+                    elif cmd == "RESET":
+                    self.reset_board()
+                    self.info_label.config(text="Ván mới bắt đầu!", fg="black")
+
+                elif cmd == "QUIT":
+                    messagebox.showerror("Kết thúc", "Đối thủ đã thoát trận! Bạn thắng.")
+                    self.window.quit()
+                    break
+
+            except Exception as e:
+                print("Error:", e)
+                break
+
+if __name__ == "__main__":
+    TicTacToeClient()
