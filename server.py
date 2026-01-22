@@ -128,3 +128,22 @@ def start_game_session(p1_tuple, p2_tuple):
     t2 = threading.Thread(target=listen_to_player, args=(session, sock2, sock1))
     t1.start()
     t2.start()
+
+def listen_to_player(session, current_sock, opponent_sock):
+    while True:
+        try:
+            msg = current_sock.recv(1024).decode('utf-8')
+            if not msg: break
+            
+            if msg.startswith("MOVE"):
+                idx = int(msg.split()[1])
+                session.handle_move(current_sock, idx)
+            elif msg == "REMATCH":
+                session.handle_rematch(current_sock)
+                
+        except:
+            break
+    
+    # Xử lý ngắt kết nối (QUIT)
+    session.send_to(opponent_sock, "QUIT")
+    current_sock.close()
